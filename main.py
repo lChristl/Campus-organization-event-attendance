@@ -14,6 +14,13 @@ attendees = [
 # Endpoint 2
 # Endpoint 3
 # Endpoint 4
+@attendance.route('/attendees/<int:attendee_id>', methods=['DELETE'])
+def delete_attendee(attendee_id):
+    for attendee in attendees:
+        if attendee["attendee_id"] == attendee_id:
+            attendees.remove(attendee)
+            return jsonify({"message": f"Attendee {attendee_id} deleted"}), 200
+    return jsonify({"error": f"Attendee {attendee_id} not found"}), 404
 
 if __name__ == '__main__':
     attendance.run(debug=True)
