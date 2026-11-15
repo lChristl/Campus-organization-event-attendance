@@ -26,6 +26,21 @@ def get_attendee(attendee_id):
     return jsonify({"error": "Attendee not found."}), 404
 
 # Endpoint 3
+@attendance.route('/attendees', methods=['POST'])
+def create_attendee():
+    data = request.get_json()
+ 
+    if not data or "name" not in data:
+        return jsonify({"error": "Missing attendee name"}), 400
+ 
+    new_attendee = {
+        "attendee_id": len(attendees) + 1,
+        "name": data["name"],
+        "checked_in": data.get("checked_in", "false")
+    }
+    attendees.append(new_attendee)
+    return jsonify({"message": f"Attendee {new_attendee['attendee_id']} registered successfully", "data": new_attendee}), 201
+ 
 # Endpoint 4
 @attendance.route('/attendees/<int:attendee_id>', methods=['DELETE'])
 def delete_attendee(attendee_id):
